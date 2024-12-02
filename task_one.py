@@ -21,19 +21,15 @@ class Stack:
     def size(self):
         return len(self.items)
 
-    # def remove(self, param):
-    #     return self.items.remove(param)
-
     def get_list(self):
         return list(self.items)
 
 
 if __name__ == '__main__':
-    a = Stack()
-    print(a.is_empty())
-    a.push('new_item')
-    a.push(0)
-    a.push(13)
-    print(a.pop())
-    print(a.peek())
-    print(a.size())
+    my_stack = Stack()
+
+    test_cases = [my_stack.is_empty(), my_stack.push('new_item'), my_stack.push(0),
+                  my_stack.push(13), my_stack.pop(), my_stack.peek(), my_stack.size()]
+
+    for case in test_cases:
+        print(case)
