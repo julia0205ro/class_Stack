@@ -2,43 +2,35 @@ from task_one import Stack
 
 
 def parentheses_balance(parentheses_str: str):
-    parentheses_list = ['[', ']', '{', '}', '(', ')']
     parentheses_dict = {'[': ']', '{': '}', '(': ')'}
     example = Stack()
-    try:
-        for i in parentheses_str:
-            if i not in parentheses_list:
-                return f'Expecting a string of parentheses as input'
-    except TypeError:
-        return f'Expecting a string of parentheses as input'
-    for i in parentheses_str:
-        if len(parentheses_str) % 2 != 0:
-            return f'Unbalanced'
-        if i in list(parentheses_dict.keys()):
-            Stack.push(example, i)
-        else:
-            target_key = [key for key, value in parentheses_dict.items()
-                          if value == i]
-            if ''.join(target_key) in example.get_list():
-                Stack.remove(example, ''.join(target_key))
-            else:
-                return f'Unbalanced'
-    if Stack.is_empty(example):
-        return f'Balanced'
+
+    if not isinstance(parentheses_str, str):
+        return "Error: a string of parentheses is expected"
+
+    for item in parentheses_str:
+        if item not in parentheses_dict.values() and item not in parentheses_dict.keys():
+            parentheses_str = parentheses_str.replace(item, '')
+
+    if len(parentheses_str) == 0:
+        return 'Error: the string does not contain parentheses'
+
+    for item in parentheses_str:
+        if item in parentheses_dict:
+            example.push(item)
+        elif item in parentheses_dict.values():
+            if example.is_empty() or parentheses_dict[example.pop()] != item:
+                return 'Unbalanced'
+
+    if example.is_empty():
+        return 'Balanced'
     else:
-        return f'Unbalanced'
+        return 'Unbalanced'
 
 
 if __name__ == '__main__':
-    print(parentheses_balance('(((([{}]))))'))
-    print(parentheses_balance('[([])((([[[]]])))]{()}'))
-    print(parentheses_balance('{{[()]}}'))
-    print(parentheses_balance('}{}'))
-    print(parentheses_balance('{{[(])]}}'))
-    print(parentheses_balance('[[{())}]'))
-    print(parentheses_balance(9))
-    print(parentheses_balance('[][]66'))
-    print(parentheses_balance('[][]6'))
-    print(parentheses_balance('[[{())}'))
-    print(parentheses_balance('9'))
-    print(parentheses_balance('['))
+    test_cases = ['(((([{}]))))', '[([])((([[[]]])))]{()}', '{{[()]}}', '}{}', '{{[(])]}}',
+                  '[[{())}]', 9, '[][]66', '[][]6', '[][6]6}', '[[{())}', '9', '[', '']
+
+    for case in test_cases:
+        print(f'{case}: {parentheses_balance(case)}')
